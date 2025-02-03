@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #2980b9;
+    }
+    h1 {
+      font-size: 36px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 24px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 5px;
+    }
+    h3 {
+      font-size: 20px;
+    }
+    p {
+      margin: 0 0 10px;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #ecf0f1;
+      border-left: 5px solid #3498db;
+    }
+    .markdown-content {
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+    }
+    /* Styling for Markdown-like Headings and Lists */
+    .markdown-content h1 {
+      font-size: 28px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .markdown-content h2 {
+      font-size: 24px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .markdown-content h3 {
+      font-size: 20px;
+      margin: 8px 0;
+      font-weight: bold;
+    }
+    .markdown-content strong {
+      font-weight: bold;
+    }
+    .markdown-content ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .chart, .table {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      padding: 10px;
+    }
+    .chart img, .table img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>{{ title }}</h1>
+
+    <div class="section summary">
+      <h2>Summary</h2>
+      <div class="markdown-content">
+        {% for summary_point in summary_text %}
+          {{ summary_point }}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="section charts">
+      <h2>Charts</h2>
+      <div class="grid-container">
+        {% for chart in plots %}
+          <div class="chart">
+            <img src="data:image/png;base64,{{ chart }}" alt="Chart">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="section tables">
+      <h2>Tables</h2>
+      <div class="grid-container">
+        {% for table in tables %}
+          <div class="table">
+            <img src="data:image/svg+xml;base64,{{ table }}" alt="Table">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Designed and Programmed by Samay Mehar</p>
+    </div>
+  </div>
+
+  <script>
+    // Function to simulate markdown styling
+    const markdownTextElements = document.querySelectorAll('.markdown-content');
+    markdownTextElements.forEach((element) => {
+      let content = element.innerHTML;
+
+      // Convert markdown-like headers
+      content = content.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+      content = content.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      content = content.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+
+      // Convert bold text
+      content = content.replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>');
+      content = content.replace(/__(.*)__/gim, '<strong>$1</strong>');
+
+      // Convert bullet points
+      content = content.replace(/^\* (.*$)/gim, '<ul><li>$1</li></ul>');
+      content = content.replace(/^- (.*$)/gim, '<ul><li>$1</li></ul>');
+
+      // Update the content with replaced HTML
+      element.innerHTML = content;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .markdown-content {
+      white-space: pre-wrap;
+      font-family: 'Arial', sans-serif;
+      line-height: 1.5;
+    }
+    .markdown-content h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    .markdown-content h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .markdown-content p {
+      margin-bottom: 8px;
+    }
+    .markdown-content ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+    .markdown-content li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="container mx-auto max-w-5xl p-6 bg-white shadow-md rounded-md">
+    <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">{{ title }}</h1>
+
+    <div class="section summary mb-6">
+      <h2 class="text-xl font-bold text-blue-500 mb-3">Summary</h2>
+      <div class="markdown-content">
+        {% for summary_point in summary_text %}
+          <p>{{ summary_point }}</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="section charts mb-6">
+      <h2 class="text-xl font-bold text-blue-500 mb-3">Charts</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for chart in plots %}
+          <div class="chart bg-white p-4 shadow-sm rounded-md">
+            <img src="data:image/png;base64,{{ chart }}" alt="Chart" class="w-full h-auto rounded-md">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="section tables mb-6">
+      <h2 class="text-xl font-bold text-blue-500 mb-3">Tables</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for table in tables %}
+          <div class="table bg-white p-4 shadow-sm rounded-md">
+            <img src="data:image/svg+xml;base64,{{ table }}" alt="Table" class="w-full h-auto rounded-md">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <footer class="text-center text-gray-500 text-sm mt-6">
+      <p>Designed and Programmed by Samay Mehar</p>
+    </footer>
+  </div>
+
+  <script>
+    // Markdown processing for styling
+    const markdownTextElements = document.querySelectorAll('.markdown-content');
+    markdownTextElements.forEach((element) => {
+      let content = element.innerHTML;
+
+      // Markdown headers
+      content = content.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+      content = content.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+
+      // Bold text conversion
+      content = content.replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>');
+
+      // Bullet points
+      content = content.replace(/^\* (.*$)/gim, '<ul><li>$1</li></ul>');
+
+      element.innerHTML = content;
+    });
+  </script>
+</body>
+</html>
